@@ -1,3 +1,4 @@
+import { terser } from "rollup-plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 
 export default {
@@ -6,5 +7,5 @@ export default {
     dir: "./dist",
     format: "iife",
   },
-  plugins: [typescript()],
+  plugins: [typescript(), terser()],
 };

@@ -216,6 +216,11 @@ resolve@^1.22.1:
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
+rollup-plugin-build-statistics@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-build-statistics/-/rollup-plugin-build-statistics-0.0.19.tgz#69601bedd5435b0279225554c948275207afec11"
+  integrity sha512-gEiiS99X0WN3zgBhe4B5MYzh68ApnjoyUPONb7CDrBqpyQTqfu8I9xPHf4M/bIRBjkD9Cyv14j91G7vjVgqJeg==
+
 rollup-plugin-terser@^7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/rollup-plugin-terser/-/rollup-plugin-terser-7.0.2.tgz#e8fbba4869981b2dc35ae7e8a502d5c6c04d324d"

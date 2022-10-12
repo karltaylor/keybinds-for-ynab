@@ -1,5 +1,7 @@
 import { terser } from "rollup-plugin-terser";
+import buildStatistics from "rollup-plugin-build-statistics";
 import typescript from "@rollup/plugin-typescript";
+import packageJson from "./package.json" assert { type: "json" };
 
 export default {
   input: "src/index.ts",
@@ -7,5 +9,11 @@ export default {
     dir: "./dist",
     format: "iife",
   },
-  plugins: [typescript(), terser()],
+  plugins: [
+    buildStatistics({
+      projectName: packageJson.name,
+    }),
+    typescript(),
+    terser(),
+  ],
 };

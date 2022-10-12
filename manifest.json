@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Keybinds for YNAB",
+  "description": "Base Level Extension",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": ["https://app.youneedabudget.com/*"],
+      "js": ["./index.js"]
+    }
+  ]
+}

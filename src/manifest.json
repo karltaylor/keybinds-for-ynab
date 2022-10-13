@@ -5,8 +5,8 @@
   "version": "1.0",
   "content_scripts": [
     {
-      "matches": ["https://app.youneedabudget.com/*"],
-      "js": ["./index.js"]
+      "js": ["./index.ts"],
+      "matches": ["https://app.youneedabudget.com/*"]
     }
   ]
 }

@@ -8,6 +8,7 @@ export const waitForElement = (selector: string) => {
 
     const observer = new MutationObserver((mutations) => {
       if (document.querySelector(selector)) {
+        console.log("Keys ready");
         resolve(document.querySelector(selector));
         observer.disconnect();
       }
@@ -18,4 +19,10 @@ export const waitForElement = (selector: string) => {
       subtree: true,
     });
   });
+};
+
+export const keyListener = (key: string, fn: () => void) => (e: KeyboardEvent) => {
+  if (e.key === key) {
+    fn();
+  }
 };

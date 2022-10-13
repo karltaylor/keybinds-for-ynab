@@ -1,3 +1,4 @@
+import { chromeExtension, simpleReloader } from "rollup-plugin-chrome-extension";
 import { terser } from "rollup-plugin-terser";
 import buildStatistics from "rollup-plugin-build-statistics";
 import copy from "rollup-plugin-copy";
@@ -7,12 +8,14 @@ import typescript from "@rollup/plugin-typescript";
 import packageJson from "./package.json" assert { type: "json" };
 
 export default {
-  input: "src/index.ts",
+  input: "src/manifest.json",
   output: {
     dir: "./dist",
-    format: "iife",
+    format: "esm",
   },
   plugins: [
+    chromeExtension(),
+    simpleReloader(),
     buildStatistics({
       projectName: packageJson.name,
     }),

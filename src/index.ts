@@ -1,52 +1,60 @@
+import { elementHasBeenRemoved } from "./elementHasBeenRemoved";
 import { keybinds } from "./keybinds";
-import { immediate, waitForElement, keyListener } from "./utils";
+import { immediate, waitForElement, keyListener, incrementOrReset, logger } from "./utils";
 
-// Run check immmediately
+const getRows = () => {
+  const allRows = Array.from(document.querySelectorAll(".budget-table-cell-available"));
+  const allButtons = allRows.map((row) => {
+    return row.children[0];
+  });
+
+  const negativeOrCredit = allButtons.filter((btn) => {
+    return btn.classList.contains("negative") || btn.classList.contains("credit");
+  });
+
+  return negativeOrCredit;
+};
+
 const execute = () => {
   let index = 0;
+  let rows: Element[] | null = null;
 
   waitForElement(".js-budget-table-row").then(() => {
-    const allRows = Array.from(document.querySelectorAll(".budget-table-cell-available"));
-    const allButtons = allRows.map((row) => {
-      return row.children[0];
-    });
+    rows = getRows();
 
-    const negativeOrCredit = allButtons.filter((btn) => {
-      return btn.classList.contains("negative") || btn.classList.contains("credit");
-    });
-
-    console.log(negativeOrCredit);
-
-    const underfundedListener = () => {
+    const underfundedListener = async () => {
       const underfundedButton = document.querySelector(
         ".budget-inspector-button.js-focus-on-start"
       );
       underfundedButton && (underfundedButton as HTMLElement).click();
-      console.log("Keybinds for YNAB: Funding current budget item.");
+      logger("Funding current budget item.");
+
+      if (rows) {
+        await elementHasBeenRemoved(rows[index]);
+        rows = getRows();
+      }
     };
 
-    const nextListener = () => {
-      index = index + 1;
+    const nextListener = async () => {
+      if (!rows) return;
 
-      const btn = document.querySelector(".js-budget-available-number.negative");
+      if (rows.length === 0) {
+        window.alert("No more underfunded items.");
+        return;
+      }
 
-      if (!btn) return;
-
-      const row = btn.parentElement?.parentElement;
+      const current = rows[index];
+      const row = current.parentElement?.parentElement;
       const input = row?.querySelector("input");
 
-      /**
-       * setTimeout to avoid entering the letter "n"
-       */
       immediate(() => row?.click());
       immediate(() => input?.blur());
 
-      window.addEventListener("keydown", keyListener(keybinds.underfunded, underfundedListener));
-
-      console.log("Keybinds for YNAB: Finding next underfunded budget item.");
+      index = incrementOrReset(rows.length, index);
     };
 
     window.addEventListener("keydown", keyListener(keybinds.next, nextListener));
+    window.addEventListener("keydown", keyListener(keybinds.underfunded, underfundedListener));
   });
 };
 

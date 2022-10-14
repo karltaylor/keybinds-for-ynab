@@ -8,7 +8,7 @@ export const waitForElement = (selector: string) => {
 
     const observer = new MutationObserver((mutations) => {
       if (document.querySelector(selector)) {
-        console.log("Keys ready");
+        logger("Keys ready");
         resolve(document.querySelector(selector));
         observer.disconnect();
       }
@@ -25,4 +25,16 @@ export const keyListener = (key: string, fn: () => void) => (e: KeyboardEvent) =
   if (e.key === key) {
     fn();
   }
+};
+
+export const incrementOrReset = (length: number, index: number) => {
+  return length - 1 === index ? 0 : index + 1;
+};
+
+export const logger = (message: string, ...args: any) => {
+  if (args) {
+    return console.log("@ynab-keys:", message, args.join(""));
+  }
+
+  console.log("@ynab-keys:", message);
 };

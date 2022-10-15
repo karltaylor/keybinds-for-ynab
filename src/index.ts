@@ -18,6 +18,7 @@ const getRows = () => {
 const execute = () => {
   let index = 0;
   let rows: Element[] | null = null;
+  let currentElement: Element | null = null;
 
   waitForElement(".js-budget-table-row").then(() => {
     rows = getRows();
@@ -29,9 +30,10 @@ const execute = () => {
       underfundedButton && (underfundedButton as HTMLElement).click();
       logger("Funding current budget item.");
 
-      if (rows) {
-        await elementHasBeenRemoved(rows[index]);
+      if (rows && currentElement) {
+        await elementHasBeenRemoved(currentElement);
         rows = getRows();
+        logger("New Rows", rows);
       }
     };
 
@@ -43,8 +45,11 @@ const execute = () => {
         return;
       }
 
-      const current = rows[index];
-      const row = current.parentElement?.parentElement;
+      currentElement = rows[index];
+
+      console.log(currentElement, rows, index);
+
+      const row = currentElement.parentElement?.parentElement;
       const input = row?.querySelector("input");
 
       immediate(() => row?.click());

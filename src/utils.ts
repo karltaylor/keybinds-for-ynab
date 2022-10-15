@@ -33,7 +33,7 @@ export const incrementOrReset = (length: number, index: number) => {
 
 export const logger = (message: string, ...args: any) => {
   if (args) {
-    return console.log("@ynab-keys:", message, args.join(""));
+    return console.log("@ynab-keys:", message, ...args);
   }
 
   console.log("@ynab-keys:", message);
